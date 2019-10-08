@@ -1,29 +1,32 @@
 const express = require('express')
 const app = express()
-const port = 3000
-
+const port =  80
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
-
 
 var mysql = require('mysql');
 
 
 var connection = mysql.createConnection({
 	host: "localhost",
-  user: "papvida1_user",
-  password: "useruseruser",
-	database: "new_schema"
+    user: "papvida1_user",
+    password: "useruseruser",
+	database: "papvida1_nodos"
 });
 
 connection.connect();
 
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
+	//res.send("si jala");
 
-		connection.query('select * from nodos', function (error, results, fields) {
-		  if (error) throw error;
+		connection.query('select * from Nodos', function (error, results, fields) {
+		  if (error) {
+				res.send("Error en el query");
+				throw error;
+
+			}
 
 		  console.log(results);
 			res.send(results);
@@ -31,10 +34,10 @@ app.get('/', (req, res) => {
 
 });
 
-app.get('/:id', (req, res) => {
+app.get('api/:id', (req, res) => {
 		let id = req.params.id;
 
-		connection.query('select * from nodos where id = "'+id+'"', function (error, results, fields) {
+		connection.query('select * from Nodos where id = "'+id+'"', function (error, results, fields) {
 		  if (error) throw error;
 
 		  console.log(results);
