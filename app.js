@@ -34,10 +34,21 @@ app.get('/api', (req, res) => {
 
 });
 
-app.get('api/:id', (req, res) => {
+app.get('/api/:id', (req, res) => {
 		let id = req.params.id;
 
-		connection.query('select * from Nodos where id = "'+id+'"', function (error, results, fields) {
+		connection.query('select * from Nodos where Id = "'+id+'"', function (error, results, fields) {
+		  if (error) throw error;
+
+		  console.log(results);
+			res.send(results);
+		});
+});
+
+app.get('/api/:id/readings', (req, res) => {
+		let id = req.params.id;
+
+		connection.query('select * from LecturasNodos where idNodo = "'+id+'" ORDER BY fecha_hora ASC', function (error, results, fields) {
 		  if (error) throw error;
 
 		  console.log(results);
