@@ -54,5 +54,15 @@ app.get('/api/:id/readings', (req, res) => {
 		  console.log(results);
 			res.send(results);
 		});
+});
 
+app.get('/api/:id/lastread', (req, res) => {
+		let id = req.params.id;
+
+		connection.query('select * from LecturasNodos where idNodo = "'+id+'" ORDER BY fecha_hora DESC LIMIT 1', function (error, results, fields) {
+		  if (error) throw error;
+
+		  console.log(results);
+			res.send(results);
+		});
 });
