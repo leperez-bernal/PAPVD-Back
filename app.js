@@ -8,6 +8,13 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 var mysql = require('mysql');
 
 
+/*
+	Conexión a las base de datos
+		host: "localhost"
+    usuario: "papvida1_user",
+    contraseña: "useruseruser",
+		nombre de la base de datos: "papvida1_nodos"
+*/
 var connection = mysql.createConnection({
 	host: "localhost",
     user: "papvida1_user",
@@ -18,8 +25,14 @@ var connection = mysql.createConnection({
 connection.connect();
 
 
+
+/*
+	Ruta: api/maps
+	Metodo: GET
+	Descripción: Devuelve un JSON con toda la información de la tabla Nodos.
+*/
 app.get('/api', (req, res) => {
-	//res.send("si jala");
+
 
 		connection.query('select * from Nodos', function (error, results, fields) {
 		  if (error) {
@@ -34,6 +47,12 @@ app.get('/api', (req, res) => {
 
 });
 
+
+/*
+	Ruta: api/maps/id
+	Metodo: GET
+	Descripción: Devuelve un JSON con toda la información de un solo nodo
+*/
 app.get('/api/:id', (req, res) => {
 		let id = req.params.id;
 
@@ -45,7 +64,12 @@ app.get('/api/:id', (req, res) => {
 		});
 });
 
-//AGREGARR DESC ASC
+/*
+	Ruta: api/maps/id/readings?=order
+	Metodo: GET
+	Descripción: Devuelve todo el histórico de lecturas del nodo especificado
+	Parametros: order {puede ser ASC o DESC para mostrar la infroamcion de manera ascendente o descencdente de fechas}
+*/
 app.get('/api/:id/readings', (req, res) => {
 		let id = req.params.id;
 		let order = req.query.order;
@@ -62,6 +86,11 @@ app.get('/api/:id/readings', (req, res) => {
 		});
 });
 
+/*
+	Ruta: api/maps/id/lastRead
+	Metodo: GET
+	Descripción: Devuelve la última lectura que realizó el nodo.
+*/
 app.get('/api/:id/lastread', (req, res) => {
 		let id = req.params.id;
 
@@ -73,7 +102,20 @@ app.get('/api/:id/lastread', (req, res) => {
 		});
 });
 
-
+/*
+	Ruta: api/maps/variables/id
+	Metodo: GET
+	Descripción: Devuelve el objeto.
+	{
+		description: String,
+		code: ,
+		abr: String,
+		unit: String,
+		min: int,
+		max: int,
+		environmental: int
+	}
+*/
 app.get('/api/variables/:id', (req, res) => {
 		let id = req.params.id;
 
