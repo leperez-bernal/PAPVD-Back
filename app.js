@@ -44,7 +44,6 @@ app.get('/api', (req, res) => {
 		  console.log(results);
 			res.send(results);
 		});
-
 });
 
 
@@ -57,6 +56,21 @@ app.get('/api/:id', (req, res) => {
 		let id = req.params.id;
 
 		connection.query('select * from Nodos where Id = "'+id+'"', function (error, results, fields) {
+		  if (error) throw error;
+
+		  console.log(results);
+			res.send(results);
+		});
+});
+
+/*
+	Ruta: api/maps/id
+	Metodo: DELETE
+*/
+app.delete('/api/:id', (req, res) => {
+		let id = req.params.id;
+
+		connection.query('DELETE from Nodos where Id = "'+id+'"', function (error, results, fields) {
 		  if (error) throw error;
 
 		  console.log(results);
@@ -119,8 +133,22 @@ app.get('/api/:id/lastread', (req, res) => {
 app.get('/api/variables/:id', (req, res) => {
 		let id = req.params.id;
 
-
 		connection.query('select * from ValuesCatalog where id = "'+id+'"', function (error, results, fields) {
+		  if (error) throw error;
+
+		  console.log(results);
+			res.send(results);
+		});
+});
+
+/*
+	Ruta: api/maps/variables/id
+	Metodo: GET
+*/
+app.delete('/api/variables/:id', (req, res) => {
+		let id = req.params.id;
+
+		connection.query('delete from ValuesCatalog where id = "'+id+'"', function (error, results, fields) {
 		  if (error) throw error;
 
 		  console.log(results);
