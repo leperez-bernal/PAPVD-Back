@@ -45,10 +45,16 @@ app.get('/api/:id', (req, res) => {
 		});
 });
 
+//AGREGARR DESC ASC
 app.get('/api/:id/readings', (req, res) => {
 		let id = req.params.id;
+		let order = req.query.order;
 
-		connection.query('select * from LecturasNodos where idNodo = "'+id+'" ORDER BY fecha_hora ASC', function (error, results, fields) {
+		if (order === undefined) {
+			order = 'ASC';
+		}
+
+		connection.query('select * from LecturasNodos where idNodo = "'+id+'" ORDER BY fecha_hora ' + order, function (error, results, fields) {
 		  if (error) throw error;
 
 		  console.log(results);
@@ -60,6 +66,19 @@ app.get('/api/:id/lastread', (req, res) => {
 		let id = req.params.id;
 
 		connection.query('select * from LecturasNodos where idNodo = "'+id+'" ORDER BY fecha_hora DESC LIMIT 1', function (error, results, fields) {
+		  if (error) throw error;
+
+		  console.log(results);
+			res.send(results);
+		});
+});
+
+
+app.get('/api/variables/:id', (req, res) => {
+		let id = req.params.id;
+
+
+		connection.query('select * from ValuesCatalog where id = "'+id+'"', function (error, results, fields) {
 		  if (error) throw error;
 
 		  console.log(results);
