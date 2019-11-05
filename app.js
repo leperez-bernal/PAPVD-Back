@@ -5,7 +5,8 @@ const port =  80
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
-var mysql = require('mysql');
+//var mysql = require('mysql');
+var bodyParser = require('body-parser')
 
 
 /*
@@ -14,7 +15,7 @@ var mysql = require('mysql');
     usuario: "papvida1_user",
     contraseña: "useruseruser",
 		nombre de la base de datos: "papvida1_nodos"
-*/
+
 var connection = mysql.createConnection({
 	host: "localhost",
     user: "papvida1_user",
@@ -23,7 +24,10 @@ var connection = mysql.createConnection({
 });
 
 connection.connect();
+*/
 
+// create application/json parser
+var jsonParser = bodyParser.json()
 
 
 /*
@@ -44,6 +48,23 @@ app.get('/api', (req, res) => {
 		  console.log(results);
 			res.send(results);
 		});
+});
+
+app.post('/api', jsonParser, (req, res) => {
+
+		q = "INSERT INTO Nodos (id, nombre, descripcion, direccion, latitud, longitud) VALUES ("+req.body.id+", "+req.body.Name+", "+req.body.Description+", "+req.body.Direction+", "+req.body.Latitude+", "+req.body.Longitud+")"
+
+		connection.query(q, function (error, results, fields) {
+		  if (error) {
+				res.send("Error en el query");
+				throw error;
+			}
+
+		  //console.log(results);
+			//res.send(results);
+		});
+
+		res.send(req.body)
 });
 
 
