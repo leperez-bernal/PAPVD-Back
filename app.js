@@ -5,7 +5,7 @@ const port =  80
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
-//var mysql = require('mysql');
+var mysql = require('mysql');
 var bodyParser = require('body-parser')
 
 
@@ -15,16 +15,17 @@ var bodyParser = require('body-parser')
     usuario: "papvida1_user",
     contraseña: "useruseruser",
 		nombre de la base de datos: "papvida1_nodos"
+*/
 
 var connection = mysql.createConnection({
 	host: "localhost",
     user: "papvida1_user",
     password: "useruseruser",
-	database: "papvida1_nodos"
+	database: "new_schema"
 });
 
 connection.connect();
-*/
+
 
 // create application/json parser
 var jsonParser = bodyParser.json()
@@ -50,13 +51,31 @@ app.get('/api', (req, res) => {
 		});
 });
 
+/*
+	Ruta: api/maps
+	Metodo: GET
+	Descripción: Devuelve un JSON con toda la información de la tabla Nodos.
+	Body:
+	{
+		"id": String,
+		"Name": String,
+		"Description": String,
+		"Direction": String,
+		"Latitude": String,
+		"Longitud": String
+	}
+*/
 app.post('/api', jsonParser, (req, res) => {
 
-		q = "INSERT INTO Nodos (id, nombre, descripcion, direccion, latitud, longitud) VALUES ("+req.body.id+", "+req.body.Name+", "+req.body.Description+", "+req.body.Direction+", "+req.body.Latitude+", "+req.body.Longitud+")"
+		//q = "INSERT INTO Nodos (id, nombre, descripcion, direccion, latitud, longitud) VALUES ("+req.body.id+", "+req.body.Name+", "+req.body.Description+", "+req.body.Direction+", "+req.body.Latitude+", "+req.body.longitud+")"
+		q = "INSERT INTO Nodos VALUES";
+		v = "\""+req.body.id+"\","+"\""+req.body.Name+"\","+"\""+req.body.Direction+"\","+req.body.Longitud+","+req.body.Latitude+","+"\""+req.body.Description+"\""
+		q = q + "(" + v + ")";
+		console.log(q);
 
 		connection.query(q, function (error, results, fields) {
 		  if (error) {
-				res.send("Error en el query");
+				//res.send("Error en el query");
 				throw error;
 			}
 
@@ -64,7 +83,7 @@ app.post('/api', jsonParser, (req, res) => {
 			//res.send(results);
 		});
 
-		res.send(req.body)
+		res.send(q);
 });
 
 
