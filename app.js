@@ -220,6 +220,34 @@ app.post('/api/variables', jsonParser, (req, res) => {
 });
 
 /*
+	Ruta: api/variables
+	Metodo: PUT (update)
+	Descripción: Inserta el objeto en la base de datos.
+	{
+		id: INTEGER,
+		id_node: STRING,
+		data: STRING (json),
+		date: DATETIME
+	}
+*/
+app.put('/api/variables', jsonParser, (req, res) => {
+
+		//query = "INSERT INTO LecturasNodos VALUES (";
+	//	values = req.body.id + ", \""+req.body.id_node+"\", \""+req.body.data+"\", \""+req.body.date+"\");";
+		query = "UPDATE LecturasNodos SET id_node = " + "\""+req.body.id_node+"\", data = "+"\""+req.body.data+"\", date = \""+req.body.date+"\" ";
+		whereClause = "WHERE id = "+req.body.id+";"
+		query = query + whereClause;
+		console.log(query);
+
+		connection.query(query, function (error, results, fields) {
+		  if (error) throw error;
+
+		  console.log(results);
+			res.send(results);
+		});
+});
+
+/*
 	Ruta: api/maps/variables/id
 	Metodo: GET
 	Descripción: Devuelve el objeto.
