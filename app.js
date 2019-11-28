@@ -178,6 +178,27 @@ app.get('/api/:id/readings', (req, res) => {
 });
 
 /*
+	Ruta: api/maps/id/readings
+	Metodo: POST
+	Descripción: Devuelve todo el histórico de lecturas del nodo especificado
+	Parametros: order {puede ser ASC o DESC para mostrar la infroamcion de manera ascendente o descencdente de fechas}
+*/
+app.post('/api/:id/readings',jsonParser ,(req, res) => {
+		let id = req.params.id;
+	//	SELECT *
+	//	FROM new_schema.LecturasNodos n
+	//	WHERE n.fecha_hora BETWEEN "2016-03-14 06:05:07" AND "2016-03-15 21:05:07";
+		let query = 'select * from LecturasNodos n where idNodo = "'+id+'" AND fecha_hora BETWEEN'+" \""+req.body.start+"\" AND \""+req.body.end+"\";";
+		console.log(query);
+		connection.query(query, function (error, results, fields) {
+		  if (error) throw error;
+
+		  console.log(results);
+			res.send(results);
+		});
+});
+
+/*
 	Ruta: api/maps/id/lastRead
 	Metodo: GET
 	Descripción: Devuelve la última lectura que realizó el nodo.
