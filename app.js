@@ -54,7 +54,7 @@ app.get('/api', (req, res) => {
 /*
 	Ruta: api/maps
 	Metodo: POST
-	Descripción:
+	Descripción: Introduce nuevo nodo a la base de datos.
 	Body:
 	{
 		"id": String,
@@ -88,8 +88,8 @@ app.post('/api', jsonParser, (req, res) => {
 
 /*
 	Ruta: api/maps
-	Metodo: PUT
-	Descripción: Devuelve un JSON con toda la información de la tabla Nodos.
+	Metodo: PUT (Update)
+	Descripción: Actualiza un nodo.
 	Body:
 	{
 		"id": String,
@@ -180,14 +180,15 @@ app.get('/api/:id/readings', (req, res) => {
 /*
 	Ruta: api/maps/id/readings
 	Metodo: POST
-	Descripción: Devuelve todo el histórico de lecturas del nodo especificado
-	Parametros: order {puede ser ASC o DESC para mostrar la infroamcion de manera ascendente o descencdente de fechas}
+	Descripción: Devuelve todo el histórico de lecturas del nodo especificado en un rango de fechas
+	Body:
+		{
+		start: "Date",
+		end: "Date"
+		}
 */
 app.post('/api/:id/readings',jsonParser ,(req, res) => {
 		let id = req.params.id;
-	//	SELECT *
-	//	FROM new_schema.LecturasNodos n
-	//	WHERE n.fecha_hora BETWEEN "2016-03-14 06:05:07" AND "2016-03-15 21:05:07";
 		let query = 'select * from LecturasNodos n where idNodo = "'+id+'" AND fecha_hora BETWEEN'+" \""+req.body.start+"\" AND \""+req.body.end+"\";";
 		console.log(query);
 		connection.query(query, function (error, results, fields) {
@@ -243,7 +244,7 @@ app.post('/api/variables', jsonParser, (req, res) => {
 /*
 	Ruta: api/variables
 	Metodo: PUT (update)
-	Descripción: Inserta el objeto en la base de datos.
+	Descripción: Actualiza el objeto en la base de datos.
 	{
 		id: INTEGER,
 		id_node: STRING,
@@ -295,7 +296,7 @@ app.get('/api/variables/:id', (req, res) => {
 
 /*
 	Ruta: api/maps/variables/id
-	Metodo: GET
+	Metodo: DELETE
 */
 app.delete('/api/variables/:id', (req, res) => {
 		let id = req.params.id;
